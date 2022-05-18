@@ -25,6 +25,23 @@ class Blockchain {
     newBlock.timestamp = new Date().toDateString();
     this.chain.push(newBlock);
   }
+
+  isChainValid() {
+    for (let i = 1; i < this.chain.length; i++) {
+      const currentBlock = this.chain[i];
+      const prevHash = this.chain[i - 1];
+
+      if (currentBlock.hash !== currentBlock.calculateHash()) {
+        return false;
+      }
+      //chech if a block points to a valid prev hah
+      if (currentBlock.previousHash !== prevHash.hash) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
 
 module.exports = Blockchain;

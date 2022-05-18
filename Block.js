@@ -1,3 +1,5 @@
+const SHA256 = require("crypto-js/sha256");
+
 class Block {
   /**
    * @param {*} index this tells us where the block is located in our blockchain.
@@ -12,11 +14,21 @@ class Block {
     this.timestamp = timestamp;
     this.data = data;
     this.previousHash = previousHash;
-    this.hash = ""; // this contains the hash of the current block and there must be a way to CALCULATE it
+    this.hash = this.calculateHash(); // this contains the hash of the current block and there must be a way to CALCULATE it
   }
 
   // in this project we are using SHA256 as hashing function using an imported library (cryptoJS)
   // npm install --save crypto-js
 
-  calculateHash() {}
+  calculateHash() {
+    const newHash = SHA256(
+      this.index +
+        this.previousHash +
+        this.timestamp +
+        JSON.stringify(this.data)
+    ).toString();
+    return newHash;
+  }
 }
+
+module.exports = Block;
